@@ -229,6 +229,23 @@ ol {
   width: 100%;
 }
 
+
+::-webkit-scrollbar {
+  width: 7px;
+  background: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00bae2;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00cde7;/*#288BAF;*/
+}
+
+
+
 /* Preloder */
 #preloder {
   position: fixed;
