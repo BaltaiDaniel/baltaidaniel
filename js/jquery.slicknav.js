@@ -224,10 +224,11 @@ $(menuBar).append($btn);
                     item.addClass(prefix+'_open');
                 }
 
-                item.addClass(prefix+'_parent');
-
-                // create parent arrow. wrap with link if parent links and separating
-                var arrowElement = $('<span class="'+prefix+'_arrow">'+'</span>');
+                // Sanitize the content to prevent XSS
+		var sanitizedSymbol = settings.showChildren ? $('<span>').text(settings.openedSymbol).html() : $('<span>').text(settings.closedSymbol).html();
+		
+		// Create the arrow element with sanitized content
+		var arrowElement = $('<span>').addClass(prefix + '_arrow').html(sanitizedSymbol);
 
                 if (settings.allowParentLinks && !settings.nestedParentLinks && containsAnchor)
                     arrowElement = arrowElement.wrap(wrapElement).parent();
