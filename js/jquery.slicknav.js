@@ -186,7 +186,7 @@
                 item.addClass(prefix+'_parent');
 
                 // create parent arrow. wrap with link if parent links and separating
-                var arrowElement = $('<span class="'+prefix+'_arrow">'+(settings.showChildren?settings.openedSymbol:settings.closedSymbol)+'</span>');
+                var arrowElement = $('<span class="'+prefix+'_arrow">'+'</span>');
 
                 if (settings.allowParentLinks && !settings.nestedParentLinks && containsAnchor)
                     arrowElement = arrowElement.wrap(wrapElement).parent();
