@@ -130,10 +130,27 @@
 	    menuBar.append(brand);
 	}
 
-	$(menuBar).append(brand);
-		}
-        $this.btn = $(
-            ['<' + settings.parentTag + ' aria-haspopup="true" role="button" tabindex="0" class="' + prefix + '_btn ' + prefix + '_collapsed">',
+	// Sanitize user input before using it in HTML construction
+var sanitizedBrand = $("<div>").text(brand).html(); // Sanitize brand input
+
+// Construct HTML with sanitized input
+var $btn = $(
+  '<' +
+    settings.parentTag +
+    ' aria-haspopup="true" role="button" tabindex="0" class="' +
+    prefix +
+    '_btn ' +
+    prefix +
+    '_collapsed">' +
+    sanitizedBrand +
+    '</' +
+    settings.parentTag +
+    '>'
+);
+
+// Append $btn to menuBar
+$(menuBar).append($btn);
+
                 '<span class="' + prefix + '_menutxt">' + settings.label + '</span>',
                 '<span class="' + iconClass + '">',
                     '<span class="' + prefix + '_icon-bar"></span>',
