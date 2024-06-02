@@ -111,11 +111,26 @@
         }
 
         // create menu bar
-        $this.mobileNav.attr('class', prefix + '_nav');
-        menuBar = $('<div class="' + prefix + '_menu"></div>');
-		if (settings.brand !== '') {
-			var brand = $('<div class="' + prefix + '_brand">'+settings.brand+'</div>');
-			$(menuBar).append(brand);
+       // Function to escape HTML characters to prevent XSS
+	function escapeHtml(str) {
+	    return String(str)
+	        .replace(/&/g, '&amp;')
+	        .replace(/</g, '&lt;')
+	        .replace(/>/g, '&gt;')
+	        .replace(/"/g, '&quot;')
+	        .replace(/'/g, '&#39;');
+	}
+	
+	this.mobileNav.attr('class', prefix + '_nav');
+	menuBar = $('<div class="' + prefix + '_menu"></div>');
+	
+	if (settings.brand !== '') {
+	    // Escape the brand name to prevent XSS
+	    var brand = $('<div class="' + prefix + '_brand">' + escapeHtml(settings.brand) + '</div>');
+	    menuBar.append(brand);
+	}
+
+	$(menuBar).append(brand);
 		}
         $this.btn = $(
             ['<' + settings.parentTag + ' aria-haspopup="true" role="button" tabindex="0" class="' + prefix + '_btn ' + prefix + '_collapsed">',
