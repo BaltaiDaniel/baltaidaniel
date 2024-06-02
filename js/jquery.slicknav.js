@@ -154,10 +154,19 @@ $(menuBar).append($btn);
                 '<span class="' + prefix + '_menutxt">' + settings.label + '</span>',
                 '<span class="' + iconClass + '">',
                     '<span class="' + prefix + '_icon-bar"></span>',
-                    '<span class="' + prefix + '_icon-bar"></span>',
-                    '<span class="' + prefix + '_icon-bar"></span>',
-                '</span>',
-            '</' + settings.parentTag + '>'
+                    var encodedPrefix = encodeHTML(prefix);
+		var encodedParentTag = encodeHTML(settings.parentTag);
+		
+		var htmlString = '<' + encodedParentTag + '>',
+		    '<span class="' + encodedPrefix + '_icon-bar"></span>',
+		    '<span class="' + encodedPrefix + '_icon-bar"></span>',
+		    '</span>',
+		    '</' + encodedParentTag + '>';
+		
+		function encodeHTML(input) {
+		  return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+		}
+
             ].join('')
         );
         $(menuBar).append($this.btn);
