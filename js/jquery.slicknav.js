@@ -161,13 +161,22 @@ $(menuBar).append($btn);
             ].join('')
         );
         $(menuBar).append($this.btn);
-        if(settings.appendTo !== '') {
-            $(settings.appendTo).append(menuBar);
-        } else {
-            $(settings.prependTo).prepend(menuBar);
-        }
-        menuBar.append($this.mobileNav);
-
+        function sanitizeSelector(selector) {
+	// Allow only alphanumeric characters and some common symbols for IDs and classes
+	return selector.replace(/[^a-zA-Z0-9_\-#\.\[\]\=\"\']+/g, '');
+	}
+	
+	var safeAppendTo = sanitizeSelector(settings.appendTo);
+	var safePrependTo = sanitizeSelector(settings.prependTo);
+	
+	if (safeAppendTo !== '') {
+	    $(safeAppendTo).append(menuBar);
+	} else {
+	    $(safePrependTo).prepend(menuBar);
+	}
+	
+	menuBar.append($this.mobileNav);
+	
         // iterate over structure adding additional structure
         var items = $this.mobileNav.find('li');
         $(items).each(function () {
