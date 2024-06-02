@@ -111,81 +111,31 @@
         }
 
         // create menu bar
-       // Function to escape HTML characters to prevent XSS
-	function escapeHtml(str) {
-	    return String(str)
-	        .replace(/&/g, '&amp;')
-	        .replace(/</g, '&lt;')
-	        .replace(/>/g, '&gt;')
-	        .replace(/"/g, '&quot;')
-	        .replace(/'/g, '&#39;');
-	}
-	
-	this.mobileNav.attr('class', prefix + '_nav');
-	menuBar = $('<div class="' + prefix + '_menu"></div>');
-	
-	if (settings.brand !== '') {
-	    // Escape the brand name to prevent XSS
-	    var brand = $('<div class="' + prefix + '_brand">' + escapeHtml(settings.brand) + '</div>');
-	    menuBar.append(brand);
-	}
-
-	// Sanitize user input before using it in HTML construction
-var sanitizedBrand = $("<div>").text(brand).html(); // Sanitize brand input
-
-// Construct HTML with sanitized input
-var $btn = $(
-  '<' +
-    settings.parentTag +
-    ' aria-haspopup="true" role="button" tabindex="0" class="' +
-    prefix +
-    '_btn ' +
-    prefix +
-    '_collapsed">' +
-    sanitizedBrand +
-    '</' +
-    settings.parentTag +
-    '>'
-);
-
-// Append $btn to menuBar
-$(menuBar).append($btn);
-
+        $this.mobileNav.attr('class', prefix + '_nav');
+        menuBar = $('<div class="' + prefix + '_menu"></div>');
+		if (settings.brand !== '') {
+			var brand = $('<div class="' + prefix + '_brand">'+settings.brand+'</div>');
+			$(menuBar).append(brand);
+		}
+        $this.btn = $(
+            ['<' + settings.parentTag + ' aria-haspopup="true" role="button" tabindex="0" class="' + prefix + '_btn ' + prefix + '_collapsed">',
                 '<span class="' + prefix + '_menutxt">' + settings.label + '</span>',
                 '<span class="' + iconClass + '">',
                     '<span class="' + prefix + '_icon-bar"></span>',
-                    var encodedPrefix = encodeHTML(prefix);
-		var encodedParentTag = encodeHTML(settings.parentTag);
-		
-		var htmlString = '<' + encodedParentTag + '>',
-		    '<span class="' + encodedPrefix + '_icon-bar"></span>',
-		    '<span class="' + encodedPrefix + '_icon-bar"></span>',
-		    '</span>',
-		    '</' + encodedParentTag + '>';
-		
-		function encodeHTML(input) {
-		  return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-		}
-
+                    '<span class="' + prefix + '_icon-bar"></span>',
+                    '<span class="' + prefix + '_icon-bar"></span>',
+                '</span>',
+            '</' + settings.parentTag + '>'
             ].join('')
         );
         $(menuBar).append($this.btn);
-        function sanitizeSelector(selector) {
-	// Allow only alphanumeric characters and some common symbols for IDs and classes
-	return selector.replace(/[^a-zA-Z0-9_\-#\.\[\]\=\"\']+/g, '');
-	}
-	
-	var safeAppendTo = sanitizeSelector(settings.appendTo);
-	var safePrependTo = sanitizeSelector(settings.prependTo);
-	
-	if (safeAppendTo !== '') {
-	    $(safeAppendTo).append(menuBar);
-	} else {
-	    $(safePrependTo).prepend(menuBar);
-	}
-	
-	menuBar.append($this.mobileNav);
-	
+        if(settings.appendTo !== '') {
+            $(settings.appendTo).append(menuBar);
+        } else {
+            $(settings.prependTo).prepend(menuBar);
+        }
+        menuBar.append($this.mobileNav);
+
         // iterate over structure adding additional structure
         var items = $this.mobileNav.find('li');
         $(items).each(function () {
@@ -233,11 +183,10 @@ $(menuBar).append($btn);
                     item.addClass(prefix+'_open');
                 }
 
-                // Sanitize the content to prevent XSS
-		var sanitizedSymbol = settings.showChildren ? $('<span>').text(settings.openedSymbol).html() : $('<span>').text(settings.closedSymbol).html();
-		
-		// Create the arrow element with sanitized content
-		var arrowElement = $('<span>').addClass(prefix + '_arrow').html(sanitizedSymbol);
+                item.addClass(prefix+'_parent');
+
+                // create parent arrow. wrap with link if parent links and separating
+                var arrowElement = $('<span class="'+prefix+'_arrow">'+(settings.showChildren?settings.openedSymbol:settings.closedSymbol)+'</span>');
 
                 if (settings.allowParentLinks && !settings.nestedParentLinks && containsAnchor)
                     arrowElement = arrowElement.wrap(wrapElement).parent();
